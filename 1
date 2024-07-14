@@ -1,0 +1,74 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+int countOccurrences(const string& text, const string& word) {
+    int count = 0;
+    size_t pos = text.find(word, 0);
+    while (pos != string::npos) {
+        count++;
+        pos = text.find(word, pos + word.size());
+    }
+    return count;
+}
+
+int countSentences(const string& text) {
+    int count = 0;
+    size_t pos = text.find_first_of(".!?", 0);
+    while (pos != string::npos) {
+        count++;
+        pos = text.find_first_of(".!?", pos + 1);
+    }
+    return count;
+}
+
+int countDotsAndCommas(const string& text) {
+    int count = 0;
+    for (char c : text) {
+        if (c == '.' || c == ',') {
+            count++;
+        }
+    }
+    return count;
+}
+
+string reverseText(const string& text) {
+    string reversed = text;
+    reverse(reversed.begin(), reversed.end());
+    return reversed;
+}
+
+string reverseSentences(const string& text) {
+    string reversedText = text;
+    size_t pos = 0;
+    while ((pos = reversedText.find_first_of(".!?", pos)) != string::npos) {
+        size_t endPos = reversedText.find_first_not_of(".!?", pos + 1);
+        reverse(reversedText.begin() + pos, reversedText.begin() + endPos);
+        pos = endPos;
+    }
+    return reversedText;
+}
+
+int main() {
+    string text = "Це приклад тексту. В якому ми рахуємо кількість слів та речень! Також, треба підрахувати кількість крапок і ком в цьому тексті.";
+
+    string word;
+    cout << "Введіть слово для підрахунку входжень: ";
+    cin >> word;
+
+    int occurrences = countOccurrences(text, word);
+    int sentences = countSentences(text);
+    int dotsAndCommas = countDotsAndCommas(text);
+    string reversedText = reverseText(text);
+    string reversedSentences = reverseSentences(text);
+
+    cout << "Кількість входжень слова '" << word << "': " << occurrences << endl;
+    cout << "Кількість речень у тексті: " << sentences << endl;
+    cout << "Кількість крапок і ком у тексті: " << dotsAndCommas << endl;
+    cout << "Реверсований текст: " << reversedText << endl;
+    cout << "Реверсовані речення у тексті: " << reversedSentences << endl;
+
+    return 0;
+}
