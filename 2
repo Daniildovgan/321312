@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+void replaceWord(char *text, const char *findWord, const char *replaceWord) {
+    char *pos = strstr(text, findWord);
+    if (pos != NULL) {
+        int findLen = strlen(findWord);
+        int replaceLen = strlen(replaceWord);
+        memmove(pos + replaceLen, pos + findLen, strlen(pos + findLen) + 1);
+        memcpy(pos, replaceWord, replaceLen);
+    }
+}
+
+void capitalizeSentences(char *text) {
+    int cap = 1;
+    while (*text) {
+        if (cap && isalpha(*text)) {
+            *text = toupper(*text);
+            cap = 0;
+        } else if (strchr(".!?", *text)) {
+            cap = 1;
+        }
+        text++;
+    }
+}
+
+void countLetters(const char *text, int *counts) {
+    while (*text) {
+        if (isalpha(*text)) {
+            counts[tolower(*text) - 'a']++;
+        }
+        text++;
+    }
+}
+
+int countDigits(const char *text) {
+    int count = 0;
+    while (*text) {
+        if (isdigit(*text)) {
+            count++;
+        }
+        text++;
+    }
+    return count;
+}
+
+int main() {
+    char text[] = "Це приклад тексту. В якому ми замінюємо слово на слово! Текст містить деякі цифри, наприклад, 12345.";
+
+    char findWord[50];
+    char replaceWord[50];
+
+    printf("Введіть слово для заміни: ");
+    scanf("%s", findWord);
+    printf("Введіть нове слово: ");
+    scanf("%s", replaceWord);
+
+    replaceWord(text, findWord, replaceWord);
+    capitalizeSentences(text);
+
+    printf("Текст зі змінами:\n%s\n", text);
+
+    int letterCounts[26] = {0};
+    countLetters(text, letterCounts);
+
+    printf("Кіл
